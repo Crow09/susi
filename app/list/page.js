@@ -10,14 +10,15 @@ export default async function Board(){
   const session = await getServerSession(authOptions);
   
   return(
-    <div>
+    <div className="list">
       <h3>Problems</h3>
       {
         list.map((item, i) => 
-        <div key={i}>
-          <Link href={`/detail/${item._id.toString()}`}>
+        <div key={i} className="list-item">
+          <Link href={`/detail/${item._id.toString()}`} style={{marginRight:"5px"}}>
             {item.name}
           </Link>
+          {item.views} views
           { item.author?.email === session?.user.email ||
             session?.user.email === process.env.ADMIN
             ? <DelBtn id={item._id.toString()}/> : ""}

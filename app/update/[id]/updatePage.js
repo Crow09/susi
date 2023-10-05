@@ -5,6 +5,8 @@ export default function UpdatePage({data}) {
   const [image, setImage] = useState(data.img);
   const [items, setItems] = useState(data.exam);
   const [text, setText] = useState('');
+  const [inputType, setInputType] = useState(data.type);
+  console.log("불러와짐")
 
   const examCreator = (e) => {
     if (text) {
@@ -29,9 +31,14 @@ export default function UpdatePage({data}) {
   const deleteHandler = (e) => {
     e.target.parentNode.remove();
   }
-  console.log(data.correct.includes("초단"));
+
+  const changeHandler = (e) => {
+    setInputType(e.target.value);
+    console.log(e.target.value);
+  }
+
   return (
-    <div>
+    <div className="new">
       <form action="/api/problem/update" method="POST">
         <div className="new">
           <h2>문제</h2>
@@ -48,8 +55,8 @@ export default function UpdatePage({data}) {
                   <input type="hidden" name="exam" value={item}/>
                   {
                     data.correct.includes(item) ?
-                    <><input type="checkbox" name="correct" value={item} defaultChecked/> {item} </>:
-                    <><input type="checkbox" name="correct" value={item}/> {item} </>
+                    <><input type={inputType} name="correct" value={item} defaultChecked/> {item} </>:
+                    <><input type={inputType} name="correct" value={item}/> {item} </>
                   }
                   <button type="button" onClick={deleteHandler}>보기 삭제</button>
                 </div>
@@ -64,12 +71,17 @@ export default function UpdatePage({data}) {
                     setText(e.target.value);
                   }}
           />
-          <button type='button' onClick={examCreator}>보기 추가</button>
+          <div style={{marginTop:"4px"}}><button type='button' onClick={examCreator}>보기 추가</button></div>
+          <div>
+            <input type="radio" name="type" value="checkbox" onChange={changeHandler} required/>복수 정답
+            <input type="radio" name="type" value="radio" onChange={changeHandler} required/>단일 정답
+          </div>
           <input type="hidden" name="img" value={image}/>
           <input type="hidden" name="_id" value={data._id.toString()} />
+          <input type="hidden" name="views" value={data.views} />
         </div>
         {
-          items.length ? <button type="submit">수정</button> : ""
+          items.length >= 2 ? <button type="submit">수정</button> : ""
         }
       </form>
     </div>

@@ -42,10 +42,10 @@ export default function CommentList({parentId}){
   useEffect(getCommentList, [])
 
   return (
-    <>
+    <div className="comment">
       <input placeholder="댓글을 작성하세요!" ref={comRef} onChange={onChangeHandler} name="comment" type="text" required/>
       <button onClick={onClickHandler}>댓글 작성</button>
-      { commentList.map((item, i)=><div key={i}>{item.comment}<button onClick={() => deleteHandler(item._id)}>삭제</button></div>)}
-    </>
+      { commentList.map((item, i)=><div key={i}>{item.author.name} : {item.comment}<button onClick={() => deleteHandler(item._id)}>삭제</button></div>)}
+    </div>
   )
 }
