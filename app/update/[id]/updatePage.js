@@ -11,7 +11,7 @@ export default function UpdatePage({data}) {
   const examCreator = (e) => {
     if (text) {
       e.preventDefault();
-      setItems([...items, text]);
+      setItems(pre => [...new Set([...pre, text])]);
       setText("");
     }
   }
